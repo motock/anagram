@@ -1,8 +1,8 @@
--------------------------------------------------------------------------------
-Test set: com.example.anagram.AnagramApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.145 s <<< FAILURE! -- in com.example.anagram.AnagramApplicationTests
-com.example.anagram.AnagramApplicationTests.contextLoads -- Time elapsed: 0.002 s <<< ERROR!
+SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
+SLF4J: Defaulting to no-operation (NOP) logger implementation
+SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.185 s <<< FAILURE! -- in com.example.anagram.AnagramApplicationTests
+[ERROR] com.example.anagram.AnagramApplicationTests.contextLoads -- Time elapsed: 0.002 s <<< ERROR!
 java.lang.IllegalStateException: Failed to load ApplicationContext for [MergedContextConfiguration@a87f8ec testClass = com.example.anagram.AnagramApplicationTests, locations = [], classes = [com.example.anagram.AnagramApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@11fc564b, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@672872e1, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@574b560f, org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@2beee7ff, org.springframework.boot.test.context.SpringBootTestAnnotation@d42d48e5], contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:142)
 	at org.springframework.test.context.support.DefaultTestContext.getApplicationContext(DefaultTestContext.java:127)
@@ -108,3 +108,17 @@ Caused by: java.lang.IllegalArgumentException: LoggerFactory is not a Logback Lo
 	at org.springframework.test.context.cache.DefaultCacheAwareContextLoaderDelegate.loadContext(DefaultCacheAwareContextLoaderDelegate.java:118)
 	... 74 more
 
+[ERROR] Errors: 
+[ERROR]   AnagramApplicationTests.contextLoads » IllegalState Failed to load ApplicationContext for [MergedContextConfiguration@a87f8ec testClass = com.example.anagram.AnagramApplicationTests, locations = [], classes = [com.example.anagram.AnagramApplication], contextInitializerClasses = [], activeProfiles = [], propertySourceLocations = [], propertySourceProperties = ["org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true"], contextCustomizers = [org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@11fc564b, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@672872e1, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@574b560f, org.springframework.boot.test.autoconfigure.actuate.observability.ObservabilityContextCustomizerFactory$DisableObservabilityContextCustomizer@1f, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@2beee7ff, org.springframework.boot.test.context.SpringBootTestAnnotation@d42d48e5], contextLoader = org.springframework.boot.test.context.SpringBootContextLoader, parent = null]
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.4:test (default-test) on project anagram-service: 
+[ERROR] 
+[ERROR] See /Users/jessecarroll/.claude/worktrees/df7eb9d0-386d-45a3-b314-4c2b9685ce58/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
