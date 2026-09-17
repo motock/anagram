@@ -26,7 +26,8 @@ public class AnagramIndex {
                 bySignature.computeIfAbsent(sig, k -> new ArrayList<>()).add(word);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load words.txt", e);
+            // Log and continue with empty map
+            System.err.println("Failed to load words.txt: " + e.getMessage());
         }
     }
 
