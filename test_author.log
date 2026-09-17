@@ -43,3 +43,19 @@ Adds the TDD suite
 [step 24] done rejected — worktree dirty, asking agent to commit
 [step 25] bash: git status --short; echo "=== diff ==="; git diff --stat
 [step 26] bash: rm -f .agent_scratchpad.md && git add test_author.log && git commit -q -m "chore: record test-author run log" && git sta
+[step 27] DONE: Test suite for the Maven scaffold story is written, verified RED, and committed (f8818ae; not pushed). No implementation was written.
+
+Committed test files:
+- src/test/java/com/example/anagram/AnagramApplicationTests.java — @SpringBootTest class with exactly one `@Test void contextLoads() {}` (the required TDD anchor).
+- src/test/java/com/example/anagram/ProjectStructureTests.java — 12 membership-based assertions grading the pom.xml and source-file requirements that contextLoads alone cannot: pom.xml at repo root; <parent> org.springframework.boot:spring-boot-starter-parent:4.1.1 with empty <relativePath/>; coordinates com.example/anagram/0.0.1-SNAPSHOT/<packaging>jar</packaging>; <properties><java.version>21</java.version>; the three starters (web, validation, test) present with groupId org.springframework.boot and NO explicit <version>; spring-boot-starter-test with <scope>test</scope>; spring-boot-maven-plugin in <build><plugins>; AnagramApplication.java at the exact path with `package com.example.anagram;`, @SpringBootApplication, public class, and public static void main(String[]) calling SpringApplication.run(AnagramApplication.class, args).
+
+Verification:
+- With a temporary correct scaffold, `mvn -B test` gave 13/13 pass, BUILD SUCCESS — proving the test logic (incl. namespace-aware DOM parsing of a standard xmlns pom) is sound.
+- Mutation checks all caught with meaningful messages: missing <relativePath/>, <packaging>war</packaging>, java.version 17, explicit <version> on starter-web, missing <scope>test</scope> (5 failures); non-public class + missing @SpringBootApplication (2 failures).
+- Scaffold and target/ build output removed; `mvn -q test` now exits 1 with "no POM in this directory" — RED for the right reason (implementation absent). Stale target/classes/AnagramApplication.class was purged so it cannot mask the missing implementation.
+- Working tree clean; only the two test files (plus the harness-managed test_author.log) are tracked.
+
+Explicitly ungraded / caveats:
+- "No other production classes are added in this story" is intentionally not graded as an exact file count, because src/main/java is a shared artifact later stories will extend; it is graded as membership (no production class other than AnagramApplication may carry @SpringBootApplication).
+- `mvn -q -DskipTests compile` exit 0 and `mvn -q test` exit 0 are harness/CI-level criteria that cannot be asserted from inside the suite (a test cannot assert its own build exit code); contextLoads plus the structural tests are the in-suite proxies.
+- Note: the harness auto-committed a WIP snapshot (db64ff1) mid-session that captured my temporary scaffold and build artifacts; my commit e4758cf removes them, so the branch tip is clean.
