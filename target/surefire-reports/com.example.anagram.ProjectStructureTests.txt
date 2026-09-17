@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
 Test set: com.example.anagram.ProjectStructureTests
 -------------------------------------------------------------------------------
-Tests run: 12, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 0.044 s <<< FAILURE! -- in com.example.anagram.ProjectStructureTests
-com.example.anagram.ProjectStructureTests.pomDeclaresProjectCoordinates -- Time elapsed: 0.019 s <<< FAILURE!
+Tests run: 12, Failures: 5, Errors: 0, Skipped: 0, Time elapsed: 0.048 s <<< FAILURE! -- in com.example.anagram.ProjectStructureTests
+com.example.anagram.ProjectStructureTests.pomDeclaresProjectCoordinates -- Time elapsed: 0.022 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: <artifactId> must be anagram ==> expected: <anagram> but was: <anagram-service>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -81,7 +81,7 @@ org.opentest4j.AssertionFailedError: <artifactId> must be anagram ==> expected: 
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 
-com.example.anagram.ProjectStructureTests.pomDeclaresRequiredStartersWithoutExplicitVersions -- Time elapsed: 0.001 s <<< FAILURE!
+com.example.anagram.ProjectStructureTests.pomDeclaresRequiredStartersWithoutExplicitVersions -- Time elapsed: 0.002 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: pom.xml must declare a dependency on org.springframework.boot:spring-boot-starter-web ==> expected: not <null>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
@@ -239,7 +239,7 @@ org.opentest4j.AssertionFailedError: pom.xml must declare a <parent> element ==>
 	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
 	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
 
-com.example.anagram.ProjectStructureTests.pomDeclaresSpringBootMavenPlugin -- Time elapsed: 0.002 s <<< FAILURE!
+com.example.anagram.ProjectStructureTests.pomDeclaresSpringBootMavenPlugin -- Time elapsed: 0.001 s <<< FAILURE!
 org.opentest4j.AssertionFailedError: pom.xml must declare the org.springframework.boot:spring-boot-maven-plugin build plugin ==> expected: not <null>
 	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:152)
 	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:132)
