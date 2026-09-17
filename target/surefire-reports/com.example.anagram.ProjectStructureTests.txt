@@ -1,0 +1,22 @@
+-------------------------------------------------------------------------------
+Test set: com.example.anagram.ProjectStructureTests
+-------------------------------------------------------------------------------
+Tests run: 12, Failures: 2, Errors: 0, Skipped: 0, Time elapsed: 0.054 s <<< FAILURE! -- in com.example.anagram.ProjectStructureTests
+com.example.anagram.ProjectStructureTests.applicationSourceDeclaresPackageAnnotationAndMain -- Time elapsed: 0.004 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: AnagramApplication must be annotated with @SpringBootApplication ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:69)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:41)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:228)
+	at com.example.anagram.ProjectStructureTests.applicationSourceDeclaresPackageAnnotationAndMain(ProjectStructureTests.java:151)
+
+com.example.anagram.ProjectStructureTests.applicationClassIsPublicAndAnnotated -- Time elapsed: 0.001 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: AnagramApplication must be a public class ==> expected: <true> but was: <false>
+	at org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:158)
+	at org.junit.jupiter.api.AssertionFailureBuilder.buildAndThrow(AssertionFailureBuilder.java:139)
+	at org.junit.jupiter.api.AssertTrue.failNotTrue(AssertTrue.java:69)
+	at org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:41)
+	at org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:228)
+	at com.example.anagram.ProjectStructureTests.applicationClassIsPublicAndAnnotated(ProjectStructureTests.java:162)
+
