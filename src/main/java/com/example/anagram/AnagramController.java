@@ -1,9 +1,8 @@
 package com.example.anagram;
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 public class AnagramController {
@@ -14,7 +13,8 @@ public class AnagramController {
     }
 
     @PostMapping("/anagrams")
-    public AnagramResponse anagrams(@Valid @RequestBody AnagramRequest request) {
-        return new AnagramResponse(service.findAnagrams(request.name()));
+    public AnagramResponse getAnagrams(@Valid @RequestBody AnagramRequest request) {
+        List<String> anagrams = service.findAnagrams(request.getName());
+        return new AnagramResponse(anagrams);
     }
 }
