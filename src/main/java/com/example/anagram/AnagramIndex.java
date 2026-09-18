@@ -16,7 +16,7 @@ public class AnagramIndex {
         bySignature = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(
                 new InputStreamReader(
-                        new ClassPathResource("words.txt").getInputStream(),
+                        new ClassPathResource("anagrams.txt").getInputStream(),
                         StandardCharsets.UTF_8))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -26,13 +26,15 @@ public class AnagramIndex {
                 bySignature.computeIfAbsent(sig, k -> new ArrayList<>()).add(word);
             }
         } catch (IOException e) {
-            // Log and continue with empty map
-            System.err.println("Failed to load words.txt: " + e.getMessage());
+            System.err.println("Failed to load anagrams.txt: " + e.getMessage());
         }
+        // Sort each bucket alphabetically
+        bySignature.values().forEach(list -> list.sort(Comparator.naturalOrder()));
     }
 
-    public List<String> wordsFor(String signature) {
-        List<String> list = bySignature.get(signature);
+    public List<String> wordsFor(String normalized) {
+        String sig = signature(normalized);
+        List<String> list = bySignature.get(sig);
         if (list == null) return List.of();
         return List.copyOf(list);
     }
