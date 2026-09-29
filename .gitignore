@@ -3,6 +3,9 @@ target/
 *.jar
 dep.txt
 dep_verbose.txt
+deps.txt
 output.txt
 Main.java
 rework_test_author.log
+test_author.log
+.tdd_split_test_author_done
