@@ -38,6 +38,33 @@ class ProjectStructureTests {
 
     private static final String SPRING_BOOT_GROUP = "org.springframework.boot";
     private static final String APPLICATION_SOURCE = "src/main/java/com/example/anagram/AnagramApplication.java";
+    private static final String GITIGNORE = ".gitignore";
+
+    // ------------------------------------------------------------------
+    // .gitignore
+    // ------------------------------------------------------------------
+
+    @Test
+    @DisplayName(".gitignore ignores .DS_Store at every level and keeps the pre-existing entries")
+    void gitignoreIgnoresDsStoreEverywhere() throws IOException {
+        Path gitignore = projectRoot().resolve(GITIGNORE);
+        assertTrue(Files.isRegularFile(gitignore), ".gitignore must exist at the repository root, expected: " + gitignore);
+
+        List<String> lines = Files.readAllLines(gitignore).stream()
+                .map(String::trim)
+                .toList();
+
+        // Exact equality on the trimmed line is deliberate: a root-anchored "/.DS_Store"
+        // (which would leave src/.DS_Store trackable) must not satisfy this.
+        assertTrue(lines.contains(".DS_Store"),
+                ".gitignore must contain an unanchored '.DS_Store' line so that .DS_Store at the repository root "
+                        + "and nested files such as src/.DS_Store are both ignored; actual lines: " + lines);
+
+        for (String required : List.of("target/", "*.class", "*.jar", "test_author.log", "deps.txt")) {
+            assertTrue(lines.contains(required),
+                    ".gitignore must keep the pre-existing entry '" + required + "'; actual lines: " + lines);
+        }
+    }
 
     // ------------------------------------------------------------------
     // pom.xml
