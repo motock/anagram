@@ -1,5 +1,8 @@
 package com.example.anagram;
 
+import java.io.FileNotFoundException;
+import java.io.UncheckedIOException;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,5 +33,17 @@ class AnagramIndexTest {
         var words = index.wordsFor("zzzz");
         assertNotNull(words);
         assertTrue(words.isEmpty());
+    }
+
+    @Test
+    void missingWordListFailsFast() {
+        UncheckedIOException thrown = assertThrows(
+                UncheckedIOException.class,
+                () -> new AnagramIndex("no-such-word-list.txt"));
+
+        assertTrue(thrown.getMessage().contains("no-such-word-list.txt"),
+                "the failure must name the resource that could not be read, got: " + thrown.getMessage());
+        assertTrue(thrown.getCause() instanceof FileNotFoundException,
+                "the underlying cause must be preserved, got: " + thrown.getCause());
     }
 }
