@@ -1,6 +1,7 @@
 package com.example.anagram;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -100,6 +101,29 @@ class ProjectStructureTests {
             assertNull(child(dependency, "version"),
                     artifactId + " must not declare an explicit <version> - it is managed by the parent");
         }
+    }
+
+    @Test
+    @DisplayName("no Spring Boot dependency pins its own version")
+    void noSpringBootDependencyOverridesTheManagedVersion() throws Exception {
+        List<String> bootArtifactIds = new ArrayList<>();
+        List<String> offenders = new ArrayList<>();
+        for (Element dependency : children(dependenciesElement(), "dependency")) {
+            if (!SPRING_BOOT_GROUP.equals(text(dependency, "groupId"))) {
+                continue;
+            }
+            String artifactId = text(dependency, "artifactId");
+            bootArtifactIds.add(artifactId);
+            if (child(dependency, "version") != null) {
+                offenders.add(artifactId + ":" + text(dependency, "version"));
+            }
+        }
+
+        assertFalse(bootArtifactIds.isEmpty(),
+                "expected at least one " + SPRING_BOOT_GROUP + " dependency, otherwise this check passes vacuously");
+        assertTrue(offenders.isEmpty(),
+                "every " + SPRING_BOOT_GROUP + " dependency must inherit its version from the parent pom; these pin one instead: "
+                        + offenders);
     }
 
     @Test
