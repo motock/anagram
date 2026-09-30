@@ -2,8 +2,10 @@ package com.example.anagram;
 
 import java.io.FileNotFoundException;
 import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.core.io.ClassPathResource;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AnagramIndexTest {
@@ -45,5 +47,18 @@ class AnagramIndexTest {
                 "the failure must name the resource that could not be read, got: " + thrown.getMessage());
         assertTrue(thrown.getCause() instanceof FileNotFoundException,
                 "the underlying cause must be preserved, got: " + thrown.getCause());
+    }
+
+    @Test
+    void bundledWordListIsNotAShrunkenFixture() throws Exception {
+        try (var in = new ClassPathResource("words.txt").getInputStream()) {
+            String text = new String(in.readAllBytes(), StandardCharsets.UTF_8);
+            long count = text.lines()
+                    .map(String::trim)
+                    .filter(line -> line.matches("[a-z]+"))
+                    .count();
+            assertTrue(count >= 100,
+                    "words.txt looks like a shrunken fixture: only " + count + " words");
+        }
     }
 }
