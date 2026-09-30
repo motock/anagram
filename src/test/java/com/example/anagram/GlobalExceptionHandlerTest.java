@@ -146,6 +146,74 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.path").doesNotExist());
     }
 
+    // --- name must contain a letter and be at most 64 characters ---
+
+    private org.springframework.test.web.servlet.ResultActions postName(String jsonEncodedName) throws Exception {
+        return this.mockMvc.perform(post("/anagrams")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"name\":\"" + jsonEncodedName + "\"}"));
+    }
+
+    @Test
+    void punctuationOnlyNameReturns400() throws Exception {
+        postName("!!!")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("name must contain at least one letter"));
+    }
+
+    @Test
+    void digitsOnlyNameReturns400() throws Exception {
+        postName("123")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("name must contain at least one letter"));
+    }
+
+    @Test
+    void nonAsciiLetterOnlyNameReturns400() throws Exception {
+        postName("é")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("name must contain at least one letter"));
+    }
+
+    @Test
+    void nameOf65CharactersReturns400() throws Exception {
+        postName("a".repeat(65))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("name must be at most 64 characters"));
+    }
+
+    @Test
+    void nameOf64CharactersIsAccepted() throws Exception {
+        postName("a".repeat(64))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void nameWithAccentedLetterAndAsciiLettersIsAccepted() throws Exception {
+        postName("café")
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void nameWithEmbeddedNewlineIsAccepted() throws Exception {
+        postName("li\\nsten")
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.anagrams[0]").value("enlist"));
+    }
+
+    @Test
+    void emptyNameYieldsExactlyOneBlankFieldError() throws Exception {
+        postName("")
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.fieldErrors.length()").value(1))
+                .andExpect(jsonPath("$.fieldErrors[0].message").value("name must not be blank"));
+    }
+
     // --- the documented 400 contract must be untouched by the new handlers ---
 
     @Test

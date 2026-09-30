@@ -7,6 +7,7 @@ input: `{"anagrams":["enlist","inlets","silent","tinsel"]}`.
 ## Shape
 
 - `AnagramController` → `AnagramService` (normalises: lowercase, strip non-`a-z`) → `AnagramIndex` (signature → words, built in the constructor).
+- Request validation (`AnagramRequest`): `name` must be non-blank, at most 64 characters, and contain at least one ASCII letter; otherwise 400.
 - `GlobalExceptionHandler` + `ErrorResponse` own the 400, 404 and 405 bodies: `{timestamp,status,error,message,fieldErrors[]}`.
 - `src/main/resources/words.txt` is required production data, not a fixture. `AnagramIndex` throws if it cannot be read.
 
