@@ -221,6 +221,27 @@ class ProjectStructureTests {
     }
 
     // ------------------------------------------------------------------
+    // .gitignore
+    // ------------------------------------------------------------------
+
+    @Test
+    @DisplayName(".gitignore ignores .DS_Store at every level and keeps the pre-existing entries")
+    void gitignoreIgnoresDsStoreEverywhere() throws IOException {
+        List<String> trimmedLines = Files.readAllLines(Paths.get(".gitignore")).stream()
+                .map(String::trim)
+                .toList();
+
+        assertTrue(trimmedLines.contains(".DS_Store"),
+                ".gitignore must contain an unanchored '.DS_Store' entry (no leading '/', no directory prefix, "
+                        + "no '**') so that both .DS_Store and src/.DS_Store are ignored, found: " + trimmedLines);
+
+        for (String required : List.of("target/", "*.class", "*.jar", "test_author.log", "deps.txt")) {
+            assertTrue(trimmedLines.contains(required),
+                    ".gitignore must keep the pre-existing entry '" + required + "', found: " + trimmedLines);
+        }
+    }
+
+    // ------------------------------------------------------------------
     // helpers
     // ------------------------------------------------------------------
 
