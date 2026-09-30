@@ -1,5 +1,6 @@
 package com.example.anagram;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,5 +90,75 @@ class GlobalExceptionHandlerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.fieldErrors.length()" ).value(1))
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("name"));
+    }
+
+    // --- 405: method not supported on an existing endpoint ---
+
+    @Test
+    void unsupportedMethodReturns405WithErrorResponseShape() throws Exception {
+        this.mockMvc.perform(get("/anagrams"))
+                .andExpect(status().isMethodNotAllowed())
+                .andExpect(jsonPath("$.status").value(405))
+                .andExpect(jsonPath("$.error").value("Method Not Allowed"))
+                .andExpect(jsonPath("$.message").value("Method not allowed"))
+                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.fieldErrors").isArray())
+                .andExpect(jsonPath("$.fieldErrors").isEmpty())
+                .andExpect(jsonPath("$.path").doesNotExist());
+    }
+
+    // --- 404: no handler for the requested path ---
+
+    @Test
+    void unknownEndpointReturns404WithErrorResponseShape() throws Exception {
+        this.mockMvc.perform(post("/nonexistent")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"cat\"}"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.error").value("Not Found"))
+                .andExpect(jsonPath("$.message").value("No such endpoint"))
+                .andExpect(jsonPath("$.timestamp").exists())
+                .andExpect(jsonPath("$.fieldErrors").isArray())
+                .andExpect(jsonPath("$.fieldErrors").isEmpty())
+                .andExpect(jsonPath("$.path").doesNotExist());
+    }
+
+    @Test
+    void unknownEndpointReturns404ForGetToo() throws Exception {
+        this.mockMvc.perform(get("/nonexistent"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.message").value("No such endpoint"))
+                .andExpect(jsonPath("$.fieldErrors").isArray())
+                .andExpect(jsonPath("$.fieldErrors").isEmpty())
+                .andExpect(jsonPath("$.path").doesNotExist());
+    }
+
+    @Test
+    void unsupportedMethodOnUnknownPathStillReturns404Shape() throws Exception {
+        this.mockMvc.perform(get("/no/such/endpoint"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404))
+                .andExpect(jsonPath("$.message").value("No such endpoint"))
+                .andExpect(jsonPath("$.fieldErrors").isArray())
+                .andExpect(jsonPath("$.fieldErrors").isEmpty())
+                .andExpect(jsonPath("$.path").doesNotExist());
+    }
+
+    // --- the documented 400 contract must be untouched by the new handlers ---
+
+    @Test
+    void existing400ContractIsUnchanged() throws Exception {
+        this.mockMvc.perform(post("/anagrams")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.error").value("Bad Request"))
+                .andExpect(jsonPath("$.message").value("Validation failed"))
+                .andExpect(jsonPath("$.fieldErrors").isArray())
+                .andExpect(jsonPath("$.fieldErrors[0].field").value("name"))
+                .andExpect(jsonPath("$.path").doesNotExist());
     }
 }
