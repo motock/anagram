@@ -1,5 +1,7 @@
 package com.example.anagram;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.core.io.ClassPathResource;
 import java.io.BufferedReader;
@@ -12,6 +14,7 @@ import java.util.*;
 @Component
 public class AnagramIndex {
     private static final String DEFAULT_WORDS = "words.txt";
+    private static final Logger log = LoggerFactory.getLogger(AnagramIndex.class);
 
     private final Map<String, List<String>> bySignature;
 
@@ -39,6 +42,8 @@ public class AnagramIndex {
         }
         // Sort each bucket alphabetically
         bySignature.values().forEach(list -> list.sort(Comparator.naturalOrder()));
+        int wordCount = bySignature.values().stream().mapToInt(List::size).sum();
+        log.info("Loaded {}: {} words in {} signature groups", resourceName, wordCount, bySignature.size());
     }
 
     public List<String> wordsFor(String normalized) {
