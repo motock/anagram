@@ -1,6 +1,6 @@
 # anagram
 
-Spring Boot 4.1.1 / Java 21 REST service. `POST /anagrams` with `{"name":"listen"}`
+Spring Boot 4.2.0 / Java 21 REST service. `POST /anagrams` with `{"name":"listen"}`
 returns the other members of the input's anagram group, alphabetised, excluding the
 input: `{"anagrams":["enlist","inlets","silent","tinsel"]}`.
 

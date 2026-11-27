@@ -51,7 +51,7 @@ class ProjectStructureTests {
     }
 
     @Test
-    @DisplayName("pom.xml inherits from spring-boot-starter-parent 4.1.1 with an empty <relativePath/>")
+    @DisplayName("pom.xml inherits from spring-boot-starter-parent 4.2.0 with an empty <relativePath/>")
     void pomDeclaresSpringBootParent() throws Exception {
         Element project = pomDocument().getDocumentElement();
         assertEquals("project", localName(project), "pom.xml root element must be <project>");
@@ -60,7 +60,7 @@ class ProjectStructureTests {
         assertNotNull(parent, "pom.xml must declare a <parent> element");
         assertEquals(SPRING_BOOT_GROUP, text(parent, "groupId"), "<parent><groupId> must be org.springframework.boot");
         assertEquals("spring-boot-starter-parent", text(parent, "artifactId"), "<parent><artifactId> must be spring-boot-starter-parent");
-        assertEquals("4.1.1", text(parent, "version"), "<parent><version> must be 4.1.1");
+        assertEquals("4.2.0", text(parent, "version"), "<parent><version> must be 4.2.0");
 
         Element relativePath = child(parent, "relativePath");
         assertNotNull(relativePath, "<parent> must contain an empty <relativePath/> element");
